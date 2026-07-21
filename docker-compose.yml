@@ -1,0 +1,50 @@
+version: '3.8'
+
+# For LOCAL DEVELOPMENT / TESTING ONLY.
+# In production on AWS, the backend runs on EC2/ECS and the database is RDS (not this postgres container).
+
+services:
+  db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: thaidelight_dev
+      POSTGRES_PASSWORD: dev_only_password
+      POSTGRES_DB: thaidelight
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./backend/models/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U thaidelight_dev -d thaidelight"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+         - ./frontend:/frontend:ro
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: thaidelight_dev
+      DB_PASSWORD: dev_only_password
+      DB_NAME: thaidelight
+      DB_SSL: "false"
+      JWT_SECRET: dev_only_jwt_secret_change_in_prod
+      CORS_ORIGIN: "*"
+      AWS_REGION: us-east-1
+      S3_BUCKET_NAME: thai-delight-menu-images-dev
+    ports:
+      - "3000:3000"
+
+volumes:
+  pgdata:

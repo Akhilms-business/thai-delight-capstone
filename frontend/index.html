@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Thai Delight Restaurant – Springdale, AR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Cinzel:wght@400;600;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#C9A84C;--gold-light:#E8C97A;--gold-pale:#F5E6B8;
+  --deep-green:#1A2E1A;--forest:#2C4A2C;--sage:#4A7A4A;
+  --dark:#0D0D0D;--darker:#080808;--charcoal:#1A1A1A;
+  --warm-white:#F9F4EC;--cream:#F2E8D5;
+  --text-muted:#9A8A6A;--text-light:#E8DEC8;
+  --glass:rgba(255,255,255,0.05);--glass-border:rgba(201,168,76,0.2);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--darker);color:var(--warm-white);font-family:'Raleway',sans-serif;overflow-x:hidden;cursor:default}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--darker)}
+::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px}
+
+/* LOADING SCREEN */
+#loader{position:fixed;inset:0;z-index:9999;background:var(--darker);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .8s ease}
+#loader.hide{opacity:0;pointer-events:none}
+.loader-emblem{width:80px;height:80px;position:relative;margin-bottom:24px}
+.loader-ring{position:absolute;inset:0;border:2px solid transparent;border-top-color:var(--gold);border-radius:50%;animation:spin 1.2s linear infinite}
+.loader-ring:nth-child(2){inset:10px;border-top-color:var(--gold-light);animation-duration:1.8s;animation-direction:reverse}
+.loader-inner{position:absolute;inset:20px;background:radial-gradient(circle,var(--gold) 0%,transparent 70%);border-radius:50%;animation:pulse 2s ease-in-out infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:.4;transform:scale(.9)}50%{opacity:1;transform:scale(1.1)}}
+.loader-text{font-family:'Cinzel',serif;color:var(--gold);letter-spacing:.3em;font-size:.75rem;animation:blink 1.5s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:.4}50%{opacity:1}}
+
+/* NAVBAR */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:20px 48px;display:flex;align-items:center;justify-content:space-between;transition:all .4s ease;background:transparent}
+nav.scrolled{background:rgba(8,8,8,.92);backdrop-filter:blur(20px);padding:14px 48px;border-bottom:1px solid var(--glass-border)}
+.nav-logo{font-family:'Cinzel',serif;font-size:1.3rem;color:var(--gold);letter-spacing:.15em;text-decoration:none;display:flex;align-items:center;gap:12px}
+.nav-logo span{color:var(--warm-white)}
+.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.nav-links{display:flex;align-items:center;gap:36px;list-style:none}
+.nav-links a{color:var(--text-light);text-decoration:none;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;font-weight:500;transition:color .3s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold);transition:width .3s}
+.nav-links a:hover{color:var(--gold)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--dark)!important;padding:10px 24px;border-radius:2px;font-weight:600;letter-spacing:.1em}
+.nav-cta::after{display:none!important}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px}
+.hamburger span{width:24px;height:1.5px;background:var(--gold);transition:all .3s}
+.mobile-menu{display:none;position:fixed;inset:0;background:rgba(8,8,8,.97);backdrop-filter:blur(20px);z-index:999;align-items:center;justify-content:center;flex-direction:column;gap:32px}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-family:'Cinzel',serif;color:var(--warm-white);text-decoration:none;font-size:1.4rem;letter-spacing:.2em;transition:color .3s}
+.mobile-menu a:hover{color:var(--gold)}
+.mobile-close{position:absolute;top:24px;right:24px;background:none;border:none;color:var(--gold);font-size:1.5rem;cursor:pointer}
+
+/* HERO */
+#hero{height:100vh;min-height:700px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:
+  radial-gradient(ellipse at 20% 50%,rgba(42,74,42,.4) 0%,transparent 60%),
+  radial-gradient(ellipse at 80% 30%,rgba(201,168,76,.15) 0%,transparent 50%),
+  linear-gradient(160deg,#0a1a0a 0%,#080808 40%,#121a0a 100%);
+}
+.hero-pattern{position:absolute;inset:0;opacity:.04;background-image:url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9A84C' fill-opacity='1'%3E%3Cpath d='M40 0 L44 36 L80 40 L44 44 L40 80 L36 44 L0 40 L36 36Z'/%3E%3C/g%3E%3C/svg%3E")}
+.hero-food-img{position:absolute;right:-5%;top:50%;transform:translateY(-50%);width:55%;height:90%;object-fit:cover;border-radius:2px 0 0 2px;opacity:0;animation:heroImgIn 1.2s ease 1.5s forwards}
+.hero-food-img-overlay{position:absolute;right:0;top:0;bottom:0;width:60%;background:linear-gradient(to right,var(--darker) 0%,transparent 40%)}
+@keyframes heroImgIn{from{opacity:0;transform:translateY(-50%) scale(1.05)}to{opacity:.85;transform:translateY(-50%) scale(1)}}
+.hero-food-visual{position:absolute;right:0;top:0;bottom:0;width:60%;overflow:hidden}
+.hero-food-circles{position:absolute;right:5%;top:50%;transform:translateY(-50%);width:420px;height:420px}
+.food-circle{position:absolute;border-radius:50%;overflow:hidden;border:3px solid rgba(201,168,76,.3);box-shadow:0 0 40px rgba(201,168,76,.2)}
+.fc1{width:300px;height:300px;top:50%;left:50%;transform:translate(-50%,-50%);background:radial-gradient(circle at 30% 30%,#2C4A1A,#0D1A0D);display:flex;align-items:center;justify-content:center;font-size:8rem;filter:drop-shadow(0 10px 30px rgba(0,0,0,.5))}
+.fc2{width:140px;height:140px;top:-10px;right:-10px;background:radial-gradient(circle,#1A2E0A,#0D1A0D);display:flex;align-items:center;justify-content:center;font-size:4rem;animation:float 4s ease-in-out infinite}
+.fc3{width:110px;height:110px;bottom:20px;left:-20px;background:radial-gradient(circle,#2A1A0A,#0D0D0D);display:flex;align-items:center;justify-content:center;font-size:3rem;animation:float 5s ease-in-out infinite .5s}
+.fc4{width:90px;height:90px;top:40px;left:40px;background:radial-gradient(circle,#1A2A1A,#0D1A0D);display:flex;align-items:center;justify-content:center;font-size:2.5rem;animation:float 3.5s ease-in-out infinite 1s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.hero-content{position:relative;z-index:2;max-width:640px;padding:0 48px;opacity:0;animation:heroIn 1s ease 0.8s forwards}
+@keyframes heroIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:var(--glass);border:1px solid var(--glass-border);padding:8px 18px;border-radius:2px;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:24px;backdrop-filter:blur(10px)}
+.hero-tag::before{content:'🪷';font-size:.9rem}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,5vw,4.5rem);font-weight:300;line-height:1.1;color:var(--warm-white);margin-bottom:20px}
+.hero-title em{font-style:italic;color:var(--gold)}
+.hero-sub{font-size:.95rem;color:var(--text-muted);line-height:1.8;margin-bottom:36px;font-weight:300;max-width:460px}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:48px}
+.btn-primary{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--dark);padding:14px 32px;border:none;border-radius:2px;font-family:'Raleway',sans-serif;font-weight:600;font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-block}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(201,168,76,.4)}
+.btn-outline{background:transparent;color:var(--warm-white);padding:14px 32px;border:1px solid rgba(255,255,255,.25);border-radius:2px;font-family:'Raleway',sans-serif;font-weight:500;font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-block;backdrop-filter:blur(10px)}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px)}
+.hero-badge{display:inline-flex;align-items:center;gap:10px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);padding:12px 20px;border-radius:4px;backdrop-filter:blur(10px)}
+.badge-stars{color:var(--gold);font-size:.9rem}
+.badge-text{font-size:.8rem;color:var(--cream)}
+.badge-text strong{color:var(--gold-light)}
+.hero-scroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:.6}
+.scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollPulse 2s ease-in-out infinite}
+@keyframes scrollPulse{0%,100%{opacity:.4;height:30px}50%{opacity:1;height:50px}}
+.scroll-label{font-size:.65rem;letter-spacing:.25em;color:var(--text-muted);text-transform:uppercase}
+
+/* SECTIONS */
+section{padding:100px 0;position:relative}
+.section-container{max-width:1200px;margin:0 auto;padding:0 48px}
+.section-tag{display:inline-block;font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid var(--gold);padding-bottom:4px;margin-bottom:20px}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3.5rem);font-weight:300;line-height:1.15;color:var(--warm-white);margin-bottom:16px}
+.section-title em{font-style:italic;color:var(--gold)}
+.section-sub{color:var(--text-muted);font-size:.95rem;line-height:1.8;font-weight:300;max-width:560px}
+
+/* DIVIDER */
+.gold-divider{display:flex;align-items:center;gap:16px;margin:60px 0}
+.gold-divider::before,.gold-divider::after{content:'';flex:1;height:1px;background:linear-gradient(to right,transparent,var(--gold-light),transparent)}
+.gold-divider-icon{color:var(--gold);font-size:1.2rem}
+
+/* ABOUT */
+#about{background:linear-gradient(180deg,var(--darker) 0%,var(--deep-green) 50%,var(--darker) 100%)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.about-images{position:relative;height:560px}
+.about-img{position:absolute;border-radius:4px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.about-img-main{width:70%;height:70%;top:0;left:0;background:linear-gradient(135deg,#1a3a1a,#0d1a0d);display:flex;align-items:center;justify-content:center;font-size:6rem;border:2px solid rgba(201,168,76,.15)}
+.about-img-sec{width:55%;height:55%;bottom:0;right:0;background:linear-gradient(135deg,#2a1a0a,#1a0d0d);display:flex;align-items:center;justify-content:center;font-size:5rem;border:2px solid rgba(201,168,76,.1)}
+.about-img-accent{position:absolute;top:50%;left:50%;transform:translate(-20%,-50%);width:100px;height:100px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.5rem;box-shadow:0 10px 40px rgba(201,168,76,.4);z-index:2}
+.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px}
+.stat-card{background:var(--glass);border:1px solid var(--glass-border);padding:24px;border-radius:4px;backdrop-filter:blur(10px);text-align:center;transition:all .3s}
+.stat-card:hover{background:rgba(201,168,76,.08);border-color:rgba(201,168,76,.4);transform:translateY(-4px)}
+.stat-num{font-family:'Cinzel',serif;font-size:1.8rem;color:var(--gold);font-weight:600}
+.stat-label{font-size:.75rem;color:var(--text-muted);letter-spacing:.1em;margin-top:4px}
+
+/* MENU */
+#menu{background:var(--darker)}
+.menu-header{text-align:center;margin-bottom:60px}
+.menu-header .section-sub{margin:0 auto}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px}
+.dish-card{background:var(--charcoal);border:1px solid rgba(255,255,255,.06);border-radius:8px;overflow:hidden;transition:all .4s;position:relative;cursor:pointer}
+.dish-card:hover{transform:translateY(-8px);border-color:rgba(201,168,76,.3);box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 0 1px rgba(201,168,76,.15)}
+.dish-img{height:200px;display:flex;align-items:center;justify-content:center;font-size:5rem;position:relative;overflow:hidden}
+.dish-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,var(--charcoal) 100%)}
+.dish-img-bg1{background:linear-gradient(135deg,#2a1a05,#1a0d00)}
+.dish-img-bg2{background:linear-gradient(135deg,#1a1a2a,#0d0d1a)}
+.dish-img-bg3{background:linear-gradient(135deg,#2a1a0a,#1a0a05)}
+.dish-img-bg4{background:linear-gradient(135deg,#1a2a1a,#0a1a0a)}
+.dish-img-bg5{background:linear-gradient(135deg,#2a1505,#1a0a00)}
+.dish-img-bg6{background:linear-gradient(135deg,#1a0a2a,#0d0515)}
+.dish-img-bg7{background:linear-gradient(135deg,#2a2a0a,#1a1a00)}
+.dish-img-bg8{background:linear-gradient(135deg,#0a1a2a,#050d1a)}
+.dish-badge{position:absolute;top:12px;left:12px;z-index:2;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--dark);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:2px}
+.dish-body{padding:20px}
+.dish-name{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--warm-white);margin-bottom:8px;font-weight:400}
+.dish-desc{font-size:.8rem;color:var(--text-muted);line-height:1.7;margin-bottom:16px}
+.dish-footer{display:flex;align-items:center;justify-content:space-between}
+.dish-price{font-family:'Cinzel',serif;color:var(--gold);font-size:1.1rem;font-weight:600}
+.dish-spice{display:flex;gap:2px;font-size:.75rem}
+.dish-add{width:32px;height:32px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:transform .2s}
+.dish-add:hover{transform:scale(1.1)}
+
+/* REVIEWS */
+#reviews{background:linear-gradient(180deg,var(--darker) 0%,#0a150a 50%,var(--darker) 100%);overflow:hidden}
+.reviews-header{text-align:center;margin-bottom:60px}
+.reviews-track-wrap{overflow:hidden;margin:0 -48px;padding:0 48px}
+.reviews-track{display:flex;gap:28px;animation:reviewsScroll 40s linear infinite}
+.reviews-track:hover{animation-play-state:paused}
+@keyframes reviewsScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.review-card{min-width:380px;background:var(--glass);border:1px solid var(--glass-border);border-radius:8px;padding:32px;backdrop-filter:blur(20px);flex-shrink:0;transition:all .3s}
+.review-card:hover{background:rgba(201,168,76,.06);border-color:rgba(201,168,76,.3);transform:translateY(-4px)}
+.review-stars{color:var(--gold);font-size:.9rem;margin-bottom:16px;letter-spacing:2px}
+.review-text{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--cream);line-height:1.7;font-style:italic;margin-bottom:24px}
+.review-author{display:flex;align-items:center;gap:14px}
+.review-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--forest),var(--sage));border:2px solid rgba(201,168,76,.3);display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.review-name{font-weight:600;font-size:.9rem;color:var(--warm-white)}
+.review-meta{font-size:.75rem;color:var(--text-muted);margin-top:2px}
+
+/* ATMOSPHERE */
+#atmosphere{background:var(--charcoal)}
+.atm-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:12px;overflow:hidden;margin-top:60px}
+.atm-main{grid-row:1/3;position:relative;min-height:500px;background:linear-gradient(135deg,#1a3a1a,#0a1a0a);display:flex;align-items:center;justify-content:center;font-size:10rem}
+.atm-main-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,.3),rgba(26,58,26,.5));display:flex;align-items:flex-end;padding:40px}
+.atm-overlay-text{font-family:'Cormorant Garamond',serif;font-size:2rem;color:var(--cream);font-style:italic;font-weight:300;line-height:1.3;max-width:280px}
+.atm-overlay-text span{color:var(--gold)}
+.atm-item{position:relative;min-height:240px;background:var(--deep-green);display:flex;align-items:center;justify-content:center;font-size:6rem;overflow:hidden;transition:transform .4s}
+.atm-item:hover{transform:scale(1.02)}
+.atm-item-overlay{position:absolute;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:flex-end;padding:20px;opacity:0;transition:opacity .3s}
+.atm-item:hover .atm-item-overlay{opacity:1}
+.atm-item-label{font-size:.8rem;color:var(--cream);letter-spacing:.1em;text-transform:uppercase}
+
+/* CONTACT */
+#contact{background:var(--darker)}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+.contact-info{display:flex;flex-direction:column;gap:28px}
+.contact-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:8px;padding:28px;backdrop-filter:blur(10px);display:flex;gap:20px;align-items:flex-start;transition:all .3s}
+.contact-card:hover{border-color:rgba(201,168,76,.4);background:rgba(201,168,76,.05)}
+.contact-icon{width:48px;height:48px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.contact-label{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px}
+.contact-value{font-size:.95rem;color:var(--warm-white);line-height:1.6}
+.hours-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.hours-item{font-size:.8rem;color:var(--text-muted)}
+.hours-item strong{color:var(--cream);display:block}
+.contact-form{background:var(--glass);border:1px solid var(--glass-border);border-radius:8px;padding:40px;backdrop-filter:blur(10px)}
+.form-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--warm-white);margin-bottom:28px}
+.form-group{margin-bottom:20px}
+.form-group label{display:block;font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px}
+.form-group input,.form-group textarea,.form-group select{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:4px;padding:12px 16px;color:var(--warm-white);font-family:'Raleway',sans-serif;font-size:.9rem;transition:border-color .3s;outline:none;-webkit-appearance:none}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:rgba(201,168,76,.5);background:rgba(201,168,76,.04)}
+.form-group textarea{resize:vertical;min-height:110px}
+.form-group select option{background:var(--charcoal);color:var(--warm-white)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.map-embed{border-radius:8px;overflow:hidden;margin-top:28px;border:1px solid var(--glass-border);height:200px;background:linear-gradient(135deg,#0a1a0a,#1a0a0a);display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;transition:all .3s}
+.map-embed:hover{border-color:rgba(201,168,76,.4)}
+.map-overlay{text-align:center;z-index:1}
+.map-pin{font-size:2.5rem;display:block;margin-bottom:8px;animation:bounce .8s ease-in-out infinite alternate}
+@keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-8px)}}
+.map-text{font-size:.85rem;color:var(--text-muted);margin-bottom:12px}
+.map-btn{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--dark);border:none;padding:10px 24px;border-radius:2px;font-family:'Raleway',sans-serif;font-weight:600;font-size:.8rem;letter-spacing:.1em;cursor:pointer;text-transform:uppercase;text-decoration:none;display:inline-block}
+
+/* FOOTER */
+footer{background:#050505;border-top:1px solid rgba(201,168,76,.15);padding:60px 0 32px}
+.footer-inner{max-width:1200px;margin:0 auto;padding:0 48px}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
+.footer-brand-name{font-family:'Cinzel',serif;font-size:1.4rem;color:var(--gold);margin-bottom:12px}
+.footer-tagline{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;color:var(--text-muted);line-height:1.7;max-width:280px}
+.footer-col-title{font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;padding-bottom:8px;border-bottom:1px solid rgba(201,168,76,.2)}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-links a{color:var(--text-muted);text-decoration:none;font-size:.85rem;transition:color .3s;letter-spacing:.05em}
+.footer-links a:hover{color:var(--gold)}
+.social-row{display:flex;gap:12px;margin-top:24px}
+.social-btn{width:40px;height:40px;background:var(--glass);border:1px solid var(--glass-border);border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:1.1rem;transition:all .3s}
+.social-btn:hover{background:rgba(201,168,76,.15);border-color:var(--gold);transform:translateY(-2px)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.05);padding-top:28px;display:flex;align-items:center;justify-content:space-between}
+.footer-copy{font-size:.78rem;color:var(--text-muted)}
+.footer-slogan{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.95rem;color:var(--gold);opacity:.7}
+.scroll-top{position:fixed;bottom:88px;right:28px;width:48px;height:48px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2rem;box-shadow:0 4px 20px rgba(201,168,76,.4);transition:all .3s;opacity:0;pointer-events:none;z-index:998}
+.scroll-top.visible{opacity:1;pointer-events:all}
+.scroll-top:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(201,168,76,.5)}
+.float-reserve{position:fixed;bottom:28px;right:28px;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--dark);border:none;border-radius:4px;padding:12px 22px;font-family:'Raleway',sans-serif;font-weight:700;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 20px rgba(201,168,76,.4);transition:all .3s;z-index:997;display:flex;align-items:center;gap:8px;text-decoration:none}
+.float-reserve:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(201,168,76,.6)}
+.float-dot{width:8px;height:8px;background:var(--deep-green);border-radius:50%;animation:dotPulse 1.5s ease-in-out infinite}
+@keyframes dotPulse{0%,100%{opacity:.5}50%{opacity:1;transform:scale(1.3)}}
+
+/* ANIMATIONS */
+.fade-in{opacity:0;transform:translateY(40px);transition:all .8s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+.fade-in-left{opacity:0;transform:translateX(-40px);transition:all .8s ease}
+.fade-in-left.visible{opacity:1;transform:translateX(0)}
+.fade-in-right{opacity:0;transform:translateX(40px);transition:all .8s ease}
+.fade-in-right.visible{opacity:1;transform:translateX(0)}
+.stagger-1{transition-delay:.1s}
+.stagger-2{transition-delay:.2s}
+.stagger-3{transition-delay:.3s}
+.stagger-4{transition-delay:.4s}
+.stagger-5{transition-delay:.5s}
+.stagger-6{transition-delay:.6s}
+.stagger-7{transition-delay:.7s}
+.stagger-8{transition-delay:.8s}
+
+/* THAI DECORATIVE */
+.thai-deco{position:absolute;opacity:.06;pointer-events:none;font-size:8rem;color:var(--gold);user-select:none}
+.deco-tl{top:-20px;left:-30px;transform:rotate(-15deg)}
+.deco-br{bottom:-20px;right:-30px;transform:rotate(165deg)}
+
+/* TOAST */
+.toast{position:fixed;bottom:140px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(201,168,76,.15);border:1px solid var(--gold);color:var(--gold-pale);padding:14px 28px;border-radius:4px;font-size:.85rem;opacity:0;pointer-events:none;transition:all .3s;z-index:9999;backdrop-filter:blur(20px);white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:16px 24px}
+  nav.scrolled{padding:12px 24px}
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .hero-content{padding:0 24px}
+  .hero-title{font-size:2.2rem}
+  .hero-food-circles{width:280px;height:280px;right:2%}
+  .fc1{width:210px;height:210px}
+  .about-grid{grid-template-columns:1fr}
+  .about-images{height:320px}
+  .contact-grid{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr 1fr}
+  .footer-bottom{flex-direction:column;gap:12px;text-align:center}
+  .section-container{padding:0 24px}
+  .atm-grid{grid-template-columns:1fr}
+  .atm-main{min-height:280px}
+  .form-row{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  section{padding:70px 0}
+  .hero-food-circles{display:none}
+  .hero-content{padding:0 20px;text-align:center}
+  .hero-btns{justify-content:center}
+  .about-stats{grid-template-columns:1fr 1fr}
+  .menu-grid{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-emblem">
+    <div class="loader-ring"></div>
+    <div class="loader-ring"></div>
+    <div class="loader-inner"></div>
+  </div>
+  <div class="loader-text">Thai Delight</div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- SCROLL TO TOP -->
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">↑</button>
+
+<!-- FLOAT RESERVE -->
+<a href="#contact" class="float-reserve">
+  <span class="float-dot"></span>
+  Reserve a Table
+</a>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">
+    <div class="logo-icon">🪷</div>
+    Thai <span>Delight</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#atmosphere">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#contact" class="nav-cta">Reserve</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" onclick="toggleMenu()">✕</button>
+  <a href="#about" onclick="toggleMenu()">About</a>
+  <a href="#menu" onclick="toggleMenu()">Menu</a>
+  <a href="#reviews" onclick="toggleMenu()">Reviews</a>
+  <a href="#atmosphere" onclick="toggleMenu()">Experience</a>
+  <a href="#contact" onclick="toggleMenu()">Contact</a>
+  <a href="#contact" onclick="toggleMenu()">Reserve a Table →</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-pattern"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Springdale's Finest Thai Cuisine</div>
+    <h1 class="hero-title">Authentic Thai <em>Flavors</em> in the Heart of Springdale</h1>
+    <p class="hero-sub">Experience rich curries, handcrafted noodles, and warm hospitality loved by over 1,000 happy customers.</p>
+    <div class="hero-btns">
+      <a href="#menu" class="btn-primary">View Menu</a>
+      <a href="#contact" class="btn-outline">Reserve a Table</a>
+    </div>
+    <div class="hero-badge">
+      <span class="badge-stars">⭐⭐⭐⭐⭐</span>
+      <span class="badge-text"><strong>4.9 Rating</strong> • 1,012 Reviews</span>
+    </div>
+  </div>
+  <div class="hero-food-visual">
+    <div class="hero-food-circles">
+      <div class="food-circle fc1">🍜</div>
+      <div class="food-circle fc2">🌿</div>
+      <div class="food-circle fc3">🍛</div>
+      <div class="food-circle fc4">🌶️</div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span class="scroll-label">Scroll</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-container">
+    <div class="about-grid">
+      <div class="about-images fade-in-left">
+        <div class="thai-deco deco-tl">🌸</div>
+        <div class="about-img about-img-main">🍲</div>
+        <div class="about-img about-img-sec">🥘</div>
+        <div class="about-img-accent">👨‍🍳</div>
+      </div>
+      <div class="fade-in-right">
+        <span class="section-tag">Our Story</span>
+        <h2 class="section-title">Where Tradition Meets <em>Passion</em></h2>
+        <p class="section-sub" style="margin-bottom:20px">Born from a deep love of authentic Thai cooking, Thai Delight is a family-owned restaurant bringing the soul of Thailand to Springdale, Arkansas. Every recipe has been passed down through generations — crafted with the freshest local ingredients and traditional techniques that honor our heritage.</p>
+        <p class="section-sub">From the moment you walk in, you're welcomed by warm spices, candlelit tables, and a team that treats every guest like family. Whether it's a quiet dinner for two or a celebration with loved ones, we make every meal unforgettable.</p>
+        <div class="about-stats">
+          <div class="stat-card fade-in stagger-1">
+            <div class="stat-num">4.9★</div>
+            <div class="stat-label">Google Rating</div>
+          </div>
+          <div class="stat-card fade-in stagger-2">
+            <div class="stat-num">1,000+</div>
+            <div class="stat-label">Happy Reviews</div>
+          </div>
+          <div class="stat-card fade-in stagger-3">
+            <div class="stat-num">Dine-In</div>
+            <div class="stat-label">& Takeaway</div>
+          </div>
+          <div class="stat-card fade-in stagger-4">
+            <div class="stat-num">Family</div>
+            <div class="stat-label">Loved & Local</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu">
+  <div class="section-container">
+    <div class="menu-header">
+      <span class="section-tag fade-in">Popular Dishes</span>
+      <h2 class="section-title fade-in" style="text-align:center">Our Signature <em>Creations</em></h2>
+      <p class="section-sub fade-in" style="text-align:center;margin:0 auto">Handcrafted with fresh ingredients, bold spices, and the love of Thai tradition</p>
+    </div>
+    <div class="menu-grid">
+      <div class="dish-card fade-in stagger-1">
+        <div class="dish-img dish-img-bg1"><span style="position:relative;z-index:1">🍜</span></div>
+        <div class="dish-badge">Popular Choice</div>
+        <div class="dish-body">
+          <div class="dish-name">Pad Thai</div>
+          <div class="dish-desc">Wok-tossed rice noodles with shrimp or tofu, tamarind, fish sauce, bean sprouts, and crushed peanuts. A classic perfected over decades.</div>
+          <div class="dish-footer">
+            <span class="dish-price">$14.99</span>
+            <div class="dish-spice">🌶️🌶️</div>
+            <button class="dish-add" onclick="showToast('Added Pad Thai to cart!')">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="dish-card fade-in stagger-2">
+        <div class="dish-img dish-img-bg2"><span style="position:relative;z-index:1">🍝</span></div>
+        <div class="dish-badge">Popular Choice</div>
+        <div class="dish-body">
+          <div class="dish-name">Drunken Noodles</div>
+          <div class="dish-desc">Wide flat noodles stir-fried with Thai basil, peppers, and your choice of protein in a savory, slightly spicy sauce.</div>
+          <div class="dish-footer">
+            <span class="dish-price">$15.99</span>
+            <div class="dish-spice">🌶️🌶️🌶️</div>
+            <button class="dish-add" onclick="showToast('Added Drunken Noodles to cart!')">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="dish-card fade-in stagger-3">
+        <div class="dish-img dish-img-bg3"><span style="position:relative;z-index:1">🥢</span></div>
+        <div class="dish-body">
+          <div class="dish-name">Pad See Ew</div>
+          <div class="dish-desc">Silky broad rice noodles wok-charred with egg, Chinese broccoli, and sweet soy sauce — deeply comforting with a smoky finish.</div>
+          <div class="dish-footer">
+            <span class="dish-price">$14.99</span>
+            <div class="dish-spice">🌶️</div>
+            <button class="dish-add" onclick="showToast('Added Pad See Ew to cart!')">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="dish-card fade-in stagger-4">
+        <div class="dish-img dish-img-bg4"><span style="position:relative;z-index:1">🍛</span></div>
+        <div class="dish-badge">Popular Choice</div>
+        <div class="dish-body">
+          <div class="dish-name">Thai Curry</div>
+          <div class="dish-desc">Velvety coconut milk curry with aromatic lemongrass, galangal, and kaffir lime. Choose green, red, or yellow — each uniquely vibrant.</div>
+          <div class="dish-footer">
+            <span class="dish-price">$16.99</span>
+            <div class="dish-spice">🌶️🌶️</div>
+            <button class="dish-add" onclick="showToast('Added Thai Curry to cart!')">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="dish-card fade-in stagger-5">
+        <div class="dish-img dish-img-bg5"><span style="position:relative;z-index:1">🥟</span></div>
+        <div class="dish-body">
+          <div class="dish-name">Crispy Spring Rolls</div>
+          <div class="dish-desc">Golden-fried rolls packed with glass noodles, vegetables, and herbs. Served with sweet chili sauce for the perfect crispy bite.</div>
+          <div class="dish-footer">
+            <span class="dish-price">$8.99</span>
+            <div class="dish-spice">🌶️</div>
+            <button class="dish-add" onclick="showToast('Added Spring Rolls to cart!')">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="dish-card fade-in stagger-6">
+        <div class="dish-img dish-img-bg6"><span style="position:relative;z-index:1">🧋</span></div>
+        <div class="dish-badge">Popular Choice</div>
+        <div class="dish-body">
+          <div class="dish-name">Thai Iced Tea</div>
+          <div class="dish-desc">Richly brewed Ceylon tea sweetened with condensed milk, poured over ice. Deeply fragrant, creamy, and utterly refreshing.</div>
+          <div class="dish-footer">
+            <span class="dish-price">$4.99</span>
+            <div class="dish-spice"></div>
+            <button class="dish-add" onclick="showToast('Added Thai Tea to cart!')">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="dish-card fade-in stagger-7">
+        <div class="dish-img dish-img-bg7"><span style="position:relative;z-index:1">🍚</span></div>
+        <div class="dish-body">
+          <div class="dish-name">Thai Fried Rice</div>
+          <div class="dish-desc">Jasmine rice wok-fried with egg, garlic, onion, and vegetables in a signature seasoning blend. Clean, satisfying, and deeply flavorful.</div>
+          <div class="dish-footer">
+            <span class="dish-price">$13.99</span>
+            <div class="dish-spice">🌶️</div>
+            <button class="dish-add" onclick="showToast('Added Fried Rice to cart!')">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="dish-card fade-in stagger-8">
+        <div class="dish-img dish-img-bg8"><span style="position:relative;z-index:1">🍲</span></div>
+        <div class="dish-body">
+          <div class="dish-name">Tom Yum Soup</div>
+          <div class="dish-desc">Thailand's most iconic soup — fiery, sour, and aromatic with lemongrass, mushrooms, lime leaf, and your choice of protein.</div>
+          <div class="dish-footer">
+            <span class="dish-price">$12.99</span>
+            <div class="dish-spice">🌶️🌶️🌶️</div>
+            <button class="dish-add" onclick="showToast('Added Tom Yum to cart!')">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="section-container">
+    <div class="reviews-header">
+      <span class="section-tag fade-in">Guest Testimonials</span>
+      <h2 class="section-title fade-in" style="text-align:center">Loved by <em>Every Guest</em></h2>
+      <p class="section-sub fade-in" style="text-align:center;margin:0 auto">Real words from real customers who made Thai Delight their favorite restaurant</p>
+    </div>
+  </div>
+  <div class="reviews-track-wrap">
+    <div class="reviews-track" id="reviewsTrack">
+      <!-- Set 1 -->
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"Best Thai food I've ever had outside of Thailand. The Pad Thai was extraordinary — perfectly balanced, beautifully presented, and made with such obvious care."</div>
+        <div class="review-author">
+          <div class="review-avatar">👩</div>
+          <div>
+            <div class="review-name">Sarah M.</div>
+            <div class="review-meta">Google Review · 2 weeks ago</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"Warm and welcoming atmosphere from the moment you walk in. The staff remembered our order from last time and greeted us like family. Truly special."</div>
+        <div class="review-author">
+          <div class="review-avatar">👨</div>
+          <div>
+            <div class="review-name">James T.</div>
+            <div class="review-meta">Google Review · 1 month ago</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"Perfectly balanced curry — I could taste every layer of flavor. The coconut milk was rich without being heavy. An unforgettable dining experience."</div>
+        <div class="review-author">
+          <div class="review-avatar">👩</div>
+          <div>
+            <div class="review-name">Emily R.</div>
+            <div class="review-meta">Google Review · 3 weeks ago</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"Excellent service and food that transported me straight to Bangkok. The Tom Yum had the perfect heat and the spring rolls were impossibly crispy."</div>
+        <div class="review-author">
+          <div class="review-avatar">🧑</div>
+          <div>
+            <div class="review-name">David K.</div>
+            <div class="review-meta">Google Review · 1 week ago</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"We've been coming here every week since we discovered it. The Drunken Noodles are a masterpiece. This is our family's restaurant now — no question."</div>
+        <div class="review-author">
+          <div class="review-avatar">👩</div>
+          <div>
+            <div class="review-name">Lisa & Mark B.</div>
+            <div class="review-meta">Google Review · 2 months ago</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"The ambiance is magical — dim, warm lighting, beautiful Thai decor, and music that sets the perfect mood. The food is just as gorgeous as the setting."</div>
+        <div class="review-author">
+          <div class="review-avatar">👨</div>
+          <div>
+            <div class="review-name">Anthony L.</div>
+            <div class="review-meta">Google Review · 5 weeks ago</div>
+          </div>
+        </div>
+      </div>
+      <!-- Set 2 (clone for infinite) -->
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"Best Thai food I've ever had outside of Thailand. The Pad Thai was extraordinary — perfectly balanced, beautifully presented, and made with such obvious care."</div>
+        <div class="review-author">
+          <div class="review-avatar">👩</div>
+          <div>
+            <div class="review-name">Sarah M.</div>
+            <div class="review-meta">Google Review · 2 weeks ago</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"Warm and welcoming atmosphere from the moment you walk in. The staff remembered our order from last time and greeted us like family. Truly special."</div>
+        <div class="review-author">
+          <div class="review-avatar">👨</div>
+          <div>
+            <div class="review-name">James T.</div>
+            <div class="review-meta">Google Review · 1 month ago</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"Perfectly balanced curry — I could taste every layer of flavor. The coconut milk was rich without being heavy. An unforgettable dining experience."</div>
+        <div class="review-author">
+          <div class="review-avatar">👩</div>
+          <div>
+            <div class="review-name">Emily R.</div>
+            <div class="review-meta">Google Review · 3 weeks ago</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"Excellent service and food that transported me straight to Bangkok. The Tom Yum had the perfect heat and the spring rolls were impossibly crispy."</div>
+        <div class="review-author">
+          <div class="review-avatar">🧑</div>
+          <div>
+            <div class="review-name">David K.</div>
+            <div class="review-meta">Google Review · 1 week ago</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"We've been coming here every week since we discovered it. The Drunken Noodles are a masterpiece. This is our family's restaurant now — no question."</div>
+        <div class="review-author">
+          <div class="review-avatar">👩</div>
+          <div>
+            <div class="review-name">Lisa & Mark B.</div>
+            <div class="review-meta">Google Review · 2 months ago</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"The ambiance is magical — dim, warm lighting, beautiful Thai decor, and music that sets the perfect mood. The food is just as gorgeous as the setting."</div>
+        <div class="review-author">
+          <div class="review-avatar">👨</div>
+          <div>
+            <div class="review-name">Anthony L.</div>
+            <div class="review-meta">Google Review · 5 weeks ago</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ATMOSPHERE -->
+<section id="atmosphere">
+  <div class="section-container" style="margin-bottom:0">
+    <span class="section-tag fade-in">The Experience</span>
+    <h2 class="section-title fade-in">A Space That <em>Feels Like Home</em></h2>
+    <p class="section-sub fade-in">Candlelit tables, silk accents, and the gentle scent of Thai herbs — every detail curated for your comfort</p>
+  </div>
+  <div class="section-container" style="margin-top:0;padding-top:0">
+    <div class="atm-grid fade-in">
+      <div class="atm-main">
+        <span style="position:relative;z-index:1">🏮</span>
+        <div class="atm-main-overlay">
+          <div class="atm-overlay-text">Where every meal feels like <span>home.</span></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr">
+        <div class="atm-item" style="background:linear-gradient(135deg,#1A2E1A,#0a1a0a)">
+          <span style="position:relative;z-index:1;font-size:5rem">🕯️</span>
+          <div class="atm-item-overlay"><span class="atm-item-label">Candlelit Ambiance</span></div>
+        </div>
+        <div class="atm-item" style="background:linear-gradient(135deg,#2A1A0A,#1a0d00)">
+          <span style="position:relative;z-index:1;font-size:5rem">🌺</span>
+          <div class="atm-item-overlay"><span class="atm-item-label">Thai Floral Décor</span></div>
+        </div>
+        <div class="atm-item" style="background:linear-gradient(135deg,#0A1A2A,#05101a)">
+          <span style="position:relative;z-index:1;font-size:5rem">👨‍👩‍👧‍👦</span>
+          <div class="atm-item-overlay"><span class="atm-item-label">Family Friendly</span></div>
+        </div>
+        <div class="atm-item" style="background:linear-gradient(135deg,#2A2A0A,#1a1a00)">
+          <span style="position:relative;z-index:1;font-size:5rem">🎋</span>
+          <div class="atm-item-overlay"><span class="atm-item-label">Authentic Interiors</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-container">
+    <span class="section-tag fade-in">Visit Us</span>
+    <h2 class="section-title fade-in">Find Us & <em>Make a Reservation</em></h2>
+    <div class="gold-divider"><span class="gold-divider-icon">🌸</span></div>
+    <div class="contact-grid">
+      <div class="contact-info fade-in-left">
+        <div class="contact-card">
+          <div class="contact-icon">📍</div>
+          <div>
+            <div class="contact-label">Location</div>
+            <div class="contact-value">909 S Pleasant St<br>Springdale, AR 72764</div>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">📞</div>
+          <div>
+            <div class="contact-label">Phone</div>
+            <div class="contact-value"><a href="tel:+14793345020" style="color:inherit;text-decoration:none">+1 (479) 334-5020</a></div>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">🕐</div>
+          <div>
+            <div class="contact-label">Hours</div>
+            <div class="hours-grid">
+              <div class="hours-item"><strong>Mon – Fri</strong>11 AM – 9:30 PM</div>
+              <div class="hours-item"><strong>Sat – Sun</strong>11 AM – 10 PM</div>
+            </div>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">🍽️</div>
+          <div>
+            <div class="contact-label">Service</div>
+            <div class="contact-value">Dine-In · Takeaway · Online Orders</div>
+          </div>
+        </div>
+        <div class="map-embed" onclick="window.open('https://maps.google.com/?q=909+S+Pleasant+St,+Springdale,+AR+72764','_blank')">
+          <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0a1a0a 0%,#1a2e1a 50%,#0d0d0d 100%);opacity:.8"></div>
+          <div class="map-overlay">
+            <span class="map-pin">📍</span>
+            <div class="map-text">909 S Pleasant St, Springdale, AR</div>
+            <a class="map-btn">Open in Google Maps ↗</a>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form fade-in-right">
+        <div class="form-title">Reserve Your Table</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" placeholder="Your first name" id="fname"/>
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" placeholder="Your last name" id="lname"/>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="tel" placeholder="(555) 000-0000" id="fphone"/>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" placeholder="you@email.com" id="femail"/>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Date</label>
+            <input type="date" id="fdate"/>
+          </div>
+          <div class="form-group">
+            <label>Time</label>
+            <input type="time" id="ftime"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Guests</label>
+          <select id="fguests">
+            <option value="">Select party size</option>
+            <option>1 – Solo Dining</option>
+            <option>2 – Table for Two</option>
+            <option>3–4 – Small Group</option>
+            <option>5–6 – Medium Group</option>
+            <option>7–10 – Large Party</option>
+            <option>10+ – Private Event</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Special Requests</label>
+          <textarea placeholder="Dietary restrictions, special occasions, seating preferences…" id="fnotes"></textarea>
+        </div>
+        <button class="btn-primary" style="width:100%;text-align:center;border:none;font-size:.85rem" onclick="submitReservation()">Confirm Reservation →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-name">🪷 Thai Delight Restaurant</div>
+        <div class="footer-tagline">"Crafted with tradition.<br>Served with heart."</div>
+        <div class="social-row">
+          <a href="#" class="social-btn" title="Facebook">📘</a>
+          <a href="#" class="social-btn" title="Instagram">📸</a>
+          <a href="#" class="social-btn" title="Google">🔍</a>
+          <a href="#" class="social-btn" title="Yelp">⭐</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Quick Links</div>
+        <ul class="footer-links">
+          <li><a href="#about">Our Story</a></li>
+          <li><a href="#menu">Menu</a></li>
+          <li><a href="#reviews">Reviews</a></li>
+          <li><a href="#atmosphere">Experience</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Hours</div>
+        <ul class="footer-links">
+          <li><a href="#">Mon – Fri: 11am – 9:30pm</a></li>
+          <li><a href="#">Saturday: 11am – 10pm</a></li>
+          <li><a href="#">Sunday: 11am – 10pm</a></li>
+          <li><a href="#" style="color:var(--gold)">Open Daily</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Contact</div>
+        <ul class="footer-links">
+          <li><a href="tel:+14793345020">+1 (479) 334-5020</a></li>
+          <li><a href="#">909 S Pleasant St</a></li>
+          <li><a href="#">Springdale, AR 72764</a></li>
+          <li><a href="#contact" style="color:var(--gold)">Reserve a Table →</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 Thai Delight Restaurant. All rights reserved.</div>
+      <div class="footer-slogan">Crafted with tradition. Served with heart.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// LOADER
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    document.getElementById('loader').classList.add('hide');
+  },1800);
+});
+
+// NAVBAR SCROLL
+const navbar=document.getElementById('navbar');
+const scrollTop=document.getElementById('scrollTop');
+window.addEventListener('scroll',()=>{
+  const y=window.scrollY;
+  if(y>60)navbar.classList.add('scrolled');
+  else navbar.classList.remove('scrolled');
+  if(y>400)scrollTop.classList.add('visible');
+  else scrollTop.classList.remove('visible');
+});
+
+// MOBILE MENU
+function toggleMenu(){
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+
+// INTERSECTION OBSERVER
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('visible')}
+  });
+},{threshold:0.12});
+document.querySelectorAll('.fade-in,.fade-in-left,.fade-in-right').forEach(el=>observer.observe(el));
+
+// TOAST
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent='🛒 '+msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// RESERVATION - now submits to the real backend API instead of just showing a toast
+const API_BASE = window.location.origin + '/api'; // same origin: Nginx proxies /api/* to the Node backend
+
+async function submitReservation(){
+  const n=document.getElementById('fname').value.trim();
+  const l=document.getElementById('lname').value.trim();
+  const phone=document.getElementById('fphone').value.trim();
+  const email=document.getElementById('femail').value.trim();
+  const date=document.getElementById('fdate').value;
+  const time=document.getElementById('ftime').value;
+  const guests=document.getElementById('fguests').value;
+  const notes=document.getElementById('fnotes').value.trim();
+
+  if(!n||!l){showToast('Please fill in your name to reserve.');return;}
+  if(!phone||!email){showToast('Please provide a phone number and email.');return;}
+  if(!date||!time){showToast('Please choose a date and time.');return;}
+
+  try{
+    const token = localStorage.getItem('td_token'); // present if the guest is logged in
+    const headers = {'Content-Type':'application/json'};
+    if(token) headers['Authorization'] = 'Bearer '+token;
+
+    const res = await fetch(`${API_BASE}/reservations`,{
+      method:'POST',
+      headers,
+      body: JSON.stringify({
+        firstName:n, lastName:l, phone, email, date, time,
+        guests: Number(guests) || 2, notes
+      })
+    });
+    const data = await res.json();
+
+    if(!res.ok){
+      const msg = (data.errors && data.errors[0] && data.errors[0].msg) || data.error || 'Something went wrong.';
+      showToast('⚠️ '+msg);
+      return;
+    }
+
+    showToast(`🎉 Reservation confirmed for ${n} ${l}! We'll call to confirm.`);
+    ['fname','lname','fphone','femail','fdate','ftime','fguests','fnotes'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el)el.value='';
+    });
+  }catch(err){
+    console.error(err);
+    showToast('⚠️ Could not reach the server. Please try again.');
+  }
+}
+
+// PARALLAX HERO
+window.addEventListener('scroll',()=>{
+  const hero=document.getElementById('hero');
+  const scrolled=window.scrollY;
+  if(hero && scrolled<window.innerHeight){
+    const circles=document.querySelector('.hero-food-circles');
+    if(circles)circles.style.transform=`translateY(calc(-50% + ${scrolled*0.12}px))`;
+  }
+});
+</script>
+</body>
+</html>

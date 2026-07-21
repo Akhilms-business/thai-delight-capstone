@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Thai Delight - Admin Dashboard</title>
+<style>
+  *{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+  body{margin:0;background:#0d0d0d;color:#f2e8d5;padding:24px}
+  h1{color:#c9a84c;font-size:1.4rem}
+  h2{color:#e8c97a;font-size:1.1rem;margin-top:36px;border-bottom:1px solid #333;padding-bottom:6px}
+  .card{background:#161616;border:1px solid #2a2a2a;border-radius:8px;padding:20px;margin-bottom:16px}
+  input,select,textarea{background:#0d0d0d;border:1px solid #444;color:#fff;padding:8px;border-radius:4px;margin:4px 0}
+  button{background:#c9a84c;color:#0d0d0d;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;font-weight:600}
+  button.danger{background:#a34a3a;color:#fff}
+  table{width:100%;border-collapse:collapse;margin-top:12px;font-size:.85rem}
+  th,td{text-align:left;padding:8px;border-bottom:1px solid #2a2a2a}
+  #loginBox{max-width:360px;margin:80px auto}
+  #dashboard{display:none}
+  .msg{color:#e8834a;font-size:.85rem}
+  .status-pending{color:#e8c97a}.status-confirmed{color:#7ac97a}.status-cancelled{color:#c97a7a}.status-completed{color:#7aa8c9}
+</style>
+</head>
+<body>
+
+<div id="loginBox" class="card">
+  <h1>🪷 Admin Login</h1>
+  <div><input id="email" type="email" placeholder="Admin email" style="width:100%"/></div>
+  <div><input id="password" type="password" placeholder="Password" style="width:100%"/></div>
+  <button onclick="login()">Log In</button>
+  <div id="loginMsg" class="msg"></div>
+</div>
+
+<div id="dashboard">
+  <h1>🪷 Thai Delight — Admin Dashboard</h1>
+  <button onclick="logout()" style="float:right">Log Out</button>
+
+  <h2>Reservations</h2>
+  <div class="card"><table id="resTable"><thead><tr><th>Name</th><th>Date</th><th>Time</th><th>Guests</th><th>Phone</th><th>Status</th><th>Actions</th></tr></thead><tbody></tbody></table></div>
+
+  <h2>Menu Items</h2>
+  <div class="card">
+    <input id="mName" placeholder="Name"/> <input id="mPrice" type="number" step="0.01" placeholder="Price"/>
+    <input id="mCategory" placeholder="Category (e.g. curry, noodles)"/>
+    <textarea id="mDesc" placeholder="Description" style="width:100%"></textarea>
+    <input id="mImage" type="file" accept="image/*"/>
+    <button onclick="createMenuItem()">Add Menu Item</button>
+    <table id="menuTable"><thead><tr><th>Name</th><th>Price</th><th>Category</th><th>Available</th><th>Actions</th></tr></thead><tbody></tbody></table>
+  </div>
+
+  <h2>Users</h2>
+  <div class="card"><table id="userTable"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Actions</th></tr></thead><tbody></tbody></table></div>
+
+  <h2>Recent Auth Events (Security)</h2>
+  <div class="card"><table id="authTable"><thead><tr><th>Email</th><th>Event</th><th>IP</th><th>When</th></tr></thead><tbody></tbody></table></div>
+</div>
+
+<script>
+const API = window.location.origin + '/api';
+function token(){ return localStorage.getItem('td_token'); }
+function authHeaders(extra={}){ return {...extra, 'Authorization':'Bearer '+token()}; }
+
+async function login(){
+  const email=document.getElementById('email').value.trim();
+  const password=document.getElementById('password').value;
+  try{
+    const res=await fetch(`${API}/auth/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});
+    const data=await res.json();
+    if(!res.ok){document.getElementById('loginMsg').textContent=data.error||'Login failed.';return;}
+    if(data.user.role!=='admin'){document.getElementById('loginMsg').textContent='This account is not an admin.';return;}
+    localStorage.setItem('td_token',data.token);
+    showDashboard();
+  }catch(e){document.getElementById('loginMsg').textContent='Could not reach server.';}
+}
+function logout(){ localStorage.removeItem('td_token'); location.reload(); }
+
+async function showDashboard(){
+  document.getElementById('loginBox').style.display='none';
+  document.getElementById('dashboard').style.display='block';
+  await Promise.all([loadReservations(), loadMenu(), loadUsers(), loadAuthEvents()]);
+}
+
+async function loadReservations(){
+  const res=await fetch(`${API}/reservations`,{headers:authHeaders()});
+  const rows=await res.json();
+  const tbody=document.querySelector('#resTable tbody'); tbody.innerHTML='';
+  rows.forEach(r=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${r.first_name} ${r.last_name}</td><td>${r.reservation_date}</td><td>${r.reservation_time}</td><td>${r.guests}</td><td>${r.phone}</td>
+      <td class="status-${r.status}">${r.status}</td>
+      <td>
+        <select onchange="updateStatus(${r.id}, this.value)">
+          ${['pending','confirmed','cancelled','completed'].map(s=>`<option value="${s}" ${s===r.status?'selected':''}>${s}</option>`).join('')}
+        </select>
+        <button class="danger" onclick="deleteReservation(${r.id})">Delete</button>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+}
+async function updateStatus(id,status){
+  await fetch(`${API}/reservations/${id}/status`,{method:'PATCH',headers:authHeaders({'Content-Type':'application/json'}),body:JSON.stringify({status})});
+  loadReservations();
+}
+async function deleteReservation(id){
+  if(!confirm('Delete this reservation?'))return;
+  await fetch(`${API}/reservations/${id}`,{method:'DELETE',headers:authHeaders()});
+  loadReservations();
+}
+
+async function loadMenu(){
+  const res=await fetch(`${API}/menu`);
+  const rows=await res.json();
+  const tbody=document.querySelector('#menuTable tbody'); tbody.innerHTML='';
+  rows.forEach(m=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${m.name}</td><td>$${m.price}</td><td>${m.category}</td><td>${m.is_available?'Yes':'No'}</td>
+      <td><button class="danger" onclick="deleteMenuItem(${m.id})">Delete</button></td>`;
+    tbody.appendChild(tr);
+  });
+}
+async function createMenuItem(){
+  const form=new FormData();
+  form.append('name',document.getElementById('mName').value);
+  form.append('price',document.getElementById('mPrice').value);
+  form.append('category',document.getElementById('mCategory').value);
+  form.append('description',document.getElementById('mDesc').value);
+  const file=document.getElementById('mImage').files[0];
+  if(file) form.append('image',file);
+  await fetch(`${API}/menu`,{method:'POST',headers:authHeaders(),body:form});
+  loadMenu();
+}
+async function deleteMenuItem(id){
+  if(!confirm('Delete this menu item?'))return;
+  await fetch(`${API}/menu/${id}`,{method:'DELETE',headers:authHeaders()});
+  loadMenu();
+}
+
+async function loadUsers(){
+  const res=await fetch(`${API}/admin/users`,{headers:authHeaders()});
+  const rows=await res.json();
+  const tbody=document.querySelector('#userTable tbody'); tbody.innerHTML='';
+  rows.forEach(u=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${u.first_name} ${u.last_name}</td><td>${u.email}</td><td>${u.role}</td>
+      <td><button onclick="toggleRole(${u.id}, '${u.role==='admin'?'user':'admin'}')">Make ${u.role==='admin'?'User':'Admin'}</button></td>`;
+    tbody.appendChild(tr);
+  });
+}
+async function toggleRole(id,role){
+  await fetch(`${API}/admin/users/${id}/role`,{method:'PATCH',headers:authHeaders({'Content-Type':'application/json'}),body:JSON.stringify({role})});
+  loadUsers();
+}
+
+async function loadAuthEvents(){
+  const res=await fetch(`${API}/admin/auth-events`,{headers:authHeaders()});
+  const rows=await res.json();
+  const tbody=document.querySelector('#authTable tbody'); tbody.innerHTML='';
+  rows.slice(0,50).forEach(a=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${a.email||'-'}</td><td>${a.event_type}</td><td>${a.ip_address||'-'}</td><td>${new Date(a.created_at).toLocaleString()}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+// Auto-login if a valid admin token is already stored
+if(token()){ showDashboard(); }
+</script>
+</body>
+</html>
