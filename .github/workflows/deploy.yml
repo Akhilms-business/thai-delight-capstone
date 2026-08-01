@@ -1,0 +1,32 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    name: Build & Deploy to EC2
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      - name: Deploy via SSM
+        run: |
+          aws ssm send-command \
+            --instance-ids "i-0e7ff1f7d54023091" \
+            --document-name "AWS-RunShellScript" \
+            --comment "Deploy thai-delight-capstone" \
+            --parameters '{"commands":[
+              "cd /home/ubuntu/thai-delight-capstone && git pull origin main",
+              "cd /home/ubuntu/thai-delight-capstone/backend && sudo docker build -t thai-delight-backend:latest .",
+              "sudo docker stop thai-delight-backend || true",
+              "sudo docker rm thai-delight-backend || true",
+              "sudo docker run -d --name thai-delight-backend --env-file .env -p 3000:3000 --restart unless-stopped thai-delight-backend:latest"
+            ]}' \
+            --region ap-south-1
